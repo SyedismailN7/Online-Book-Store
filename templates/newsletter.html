@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-5" style="max-width: 600px;">
+
+    <div class="card shadow-lg border-0" style="background:#111; color:#fff;">
+        <div class="card-body p-4">
+
+            <h2 class="text-center mb-3 fw-bold">📨 Subscribe to Newsletter</h2>
+            <p class="text-center text-secondary mb-4">
+                Get updates on new arrivals, best sellers & exclusive offers.
+            </p>
+
+            {% if message %}
+            <div class="alert alert-success text-center">
+                {{ message }}
+            </div>
+            {% endif %}
+
+            <form method="POST" action="">
+                {% csrf_token %}
+
+                <div class="mb-3">
+                    <label class="form-label text-light">Email Address</label>
+                    <input type="email" name="email" class="form-control"
+                           placeholder="Enter your email" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100 py-2 mt-2"
+                        style="background:#0d6efd; border-radius:8px;">
+                    Subscribe
+                </button>
+            </form>
+
+        </div>
+    </div>
+
+</div>
+{% endblock %}

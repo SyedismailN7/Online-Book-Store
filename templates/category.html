@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}{{ category.name }} - Category{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">{{ category.name }}</h2>
+
+<div class="row">
+    {% for book in books %}
+    <div class="col-md-3 mb-4">
+        <div class="card h-100">
+            <img src="{{ book.image.url }}" class="card-img-top" style="height:260px; object-fit:cover;">
+            <div class="card-body">
+                <h5>{{ book.title }}</h5>
+                <p>{{ book.author }}</p>
+                <a href="{% url 'book_detail' book.id %}" class="btn btn-primary btn-sm">View</a>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+        <p>No books found in this category.</p>
+    {% endfor %}
+</div>
+
+{% endblock %}

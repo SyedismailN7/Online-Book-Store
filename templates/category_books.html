@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}{{ category.name }}{% endblock %}
+
+{% block content %}
+<h2>{{ category.name }}</h2>
+<div class="row">
+    {% for book in books %}
+        <div class="col-md-3 mb-4">
+            <div class="card h-100">
+                <img src="{{ book.image.url }}" class="card-img-top" style="height:250px; object-fit:cover;">
+                <div class="card-body">
+                    <h5>{{ book.title }}</h5>
+                    <p>{{ book.author }}</p>
+                    <p><strong>₹{{ book.price }}</strong></p>
+                    <a href="/book/{{ book.id }}/" class="btn btn-primary btn-sm">View</a>
+                    <a href="/cart/add/{{ book.id }}/" class="btn btn-success btn-sm">Add</a>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

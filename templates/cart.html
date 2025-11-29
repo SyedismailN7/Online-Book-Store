@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container text-light" style="max-width: 900px; margin: auto; padding: 40px;">
+
+    <h1 class="mb-3">Your Cart</h1>
+    <hr class="border-secondary">
+
+    {% if not items %}
+        <p class="text-secondary">Your cart is empty.</p>
+        <a href="/" class="btn btn-light mt-3">Browse Books</a>
+
+    {% else %}
+
+        <table class="table table-dark table-bordered table-striped mt-3">
+            <thead>
+                <tr>
+                    <th>Book</th>
+                    <th>Qty</th>
+                    <th>Price</th>
+                    <th>Subtotal</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for item in items %}
+                <tr>
+                    <td>{{ item.book.title }}</td>
+
+                    <!-- FIXED: removed extra </td> -->
+                    <td>
+                        <a class="qty-btn" href="{% url 'update_quantity' item.id %}?change=-1">−</a>
+                        {{ item.quantity }}
+                        <a class="qty-btn" href="{% url 'update_quantity' item.id %}?change=1">+</a>
+                    </td>
+
+                    <td>₹{{ item.book.price }}</td>
+
+                    <td>₹{{ item.subtotal }}</td>
+
+                    <td>
+                        <a href="/cart/remove/{{ item.id }}/" class="btn btn-sm btn-danger">Remove</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="d-flex justify-content-between align-items-center mt-4">
+            <h3>Total: <span class="text-warning">₹{{ total }}</span></h3>
+
+            <div>
+                <a href="/" class="btn btn-outline-light">Continue Shopping</a>
+                <a href="/cart/empty/" class="btn btn-danger ms-2">Empty Cart</a>
+            </div>
+        </div>
+
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block title %}{{ book.title }}{% endblock %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-md-4">
+        <img src="{% if book.image %}{{ book.image.url }}{% else %}/static/img/no_image.png{% endif %}" 
+             class="img-fluid rounded shadow" alt="{{ book.title }}">
+    </div>
+
+    <div class="col-md-8 text-light">
+        <h2>{{ book.title }}</h2>
+
+        <p><strong>Author:</strong> {{ book.author }}</p>
+        <p><strong>Price:</strong> ₹{{ book.price }}</p>
+        <p class="text-secondary">{{ book.description }}</p>
+
+        <a href="{% url 'add_to_cart' book.id %}" class="btn btn-success">Add to Cart</a>
+    </div>
+</div>
+
+<!-- AI SUMMARY SECTION -->
+<div class="mt-5">
+    <h4 class="text-light">AI Summary</h4>
+
+    <div id="summary-box" class="text-secondary py-3" style="min-height: 80px;">
+        {% if book.ai_summary %}
+            {{ book.ai_summary }}
+        {% else %}
+            <em>No summary yet. Click below to generate.</em>
+        {% endif %}
+    </div>
+
+    <!-- FIX: No JS inside attributes -->
+    <button class="btn btn-light mt-3" id="summary-btn" data-book-id="{{ book.id }}">
+        Generate Summary
+    </button>
+</div>
+
+<script>
+document.getElementById("summary-btn").addEventListener("click", function () {
+
+    const bookId = this.getAttribute("data-book-id");
+    const box = document.getElementById("summary-box");
+
+    box.innerHTML = "<em>Generating summary...</em>";
+
+    fetch(`/book/${bookId}/generate-summary/`)
+
+        .then(res => res.json())
+        .then(data => {
+            if (data.summary) {
+                box.innerHTML = data.summary;
+            } else {
+                box.innerHTML = "<span class='text-danger'>Error: " + data.error + "</span>";
+            }
+        })
+        .catch(err => {
+            box.innerHTML = "<span class='text-danger'>Something went wrong.</span>";
+        });
+});
+</script>
+
+{% endblock %}
